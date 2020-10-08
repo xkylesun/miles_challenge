@@ -59,7 +59,8 @@ time, mark, audio, video {
 	padding: 0;
 	border: 0;
 	font-size: 100%;
-	font: inherit;
+  font-family: Arial, Helvetica, sans-serif;
+  color: gray;
 	vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
@@ -86,22 +87,24 @@ q:before, q:after {
 
 table {
 	border-collapse: collapse;
-	border-spacing: 0;
+  border-spacing: 0;
 }
 
 .table {
   margin-top: 20px;
   display: flex;
+  width: 90%;
+  margin: 0 auto;
 }
 
 .reward_col {
   width: 25%;
-  border-right: 1px solid gray;
+  border-right: 1px solid lightgray;
 }
 
 .category_col {
   width: 75%;
-  border-right: 1px solid gray;
+  border-right: 1px solid lightgray;
 }
 
 .reward_list {
@@ -115,11 +118,12 @@ table {
 .reward_item {
   height: 80px;
   width: 80px;
-  background-color: aqua;
   margin: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
+  border: 1px solid lightgray;
+  box-sizing: border-box;
 }
 
 .reward_item:hover {
@@ -128,16 +132,22 @@ table {
 
 .category_list {
   display: flex;
-  /* padding: 10px 0; */
   height: calc(100% - 40px);
 }
 
 .category_item {
   width: 100%;
+  margin-top: 10px;
+  border-right: 1px solid lightgray;
+  box-sizing: border-box;
+}
+
+.category_item:last-child {
+  border-right: none;
 }
 
 .category_body {
-  height: 100%;
+  height: calc(100% - 40px);
 }
 
 .category_rewards {
@@ -149,15 +159,19 @@ table {
 
 .tbl_title {
   padding: 10px 10px;
-  border-bottom: 1px solid gray;
+  border-bottom: 1px solid lightgray;
+  margin: 0 10px;
+  box-sizing: border-box;
+  height: 40px;
 }
 
 .tbl_subtitle {
   padding: 10px 10px;
   margin: 0 10px;
-  border-bottom: 1px solid gray;
-  line-height: 19px;  
-
+  border-bottom: 1px solid lightgray;
+  height: 20px;
+  line-height: 20px;
+  box-sizing: content-box;
 }
 
 .reward_in_cat {
@@ -167,23 +181,23 @@ table {
 }
 
 .reward_R1 {
-  top: 10px;
+  top: 0px;
 }
 
 .reward_R2 {
-  top: 130px;
+  top: 120px;
 }
 
 .reward_R3 {
-  top: 250px;
+  top: 240px;
 }
 
 .reward_R4 {
-  top: 370px;
+  top: 360px;
 }
 
 .reward_R5 {
-  top: 490px;
+  top: 480px;
 }
 
 .control {
@@ -197,4 +211,14 @@ table {
   top: 0;
   right: 0;
   float: right;
+}
+
+.project_title {
+  font-size: 20px;
+  margin: 20px;
+  font-weight: bold;
+}
+
+button:hover {
+  cursor: pointer;
 }

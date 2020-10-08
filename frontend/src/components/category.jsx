@@ -9,7 +9,7 @@ class Category extends React.Component {
     render() {
         return (
             <div className="category_body" id="category_body">
-                <h1 className="tbl_subtitle">{this.props.name}</h1>
+                <h1 className="tbl_title">{this.props.name}</h1>
                 <ul 
                     className="category_rewards"
                     id={this.props.name}>

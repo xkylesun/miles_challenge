@@ -123,7 +123,6 @@ class Table extends React.Component {
 
     redo(){
         if (this.state.redo){
-            console.log(this.state.redo)
             let data = JSON.parse(this.state.redo);
             let tmp = JSON.stringify(this.state.arrange);
             this.setState({
