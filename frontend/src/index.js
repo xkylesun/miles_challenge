@@ -26,14 +26,22 @@ document.addEventListener("DOMContentLoaded", () => {
   let store;
   let data = localStorage.getItem("lastData");
   if (data) {
-    store = configureStore(JSON.parse(data))
+    store = configureStore({
+      arrange: JSON.parse(data),
+      undo: null,
+      redo: null
+    })
   } else {
     let start = {
-      C1: [],
-      C2: [],
-      C3: [],
-      C4: [],
-      C5: [],
+      arrange: {
+        C1: [],
+        C2: [],
+        C3: [],
+        C4: [],
+        C5: [],
+      },
+      undo: null,
+      redo: null
     }
     store = configureStore(start);
   }

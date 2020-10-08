@@ -1,19 +1,39 @@
-// import { RECEIVE_PROJECT, RECEIVE_PROJECT_DRAFT } from "../actions/project_actions";
-// import { RECEIVE_REWARDS } from "../actions/reward_actions";
+
 import { ADD_REWARD, DELETE_REWARD, MOVE_REWARD } from "../actions/reward_actions"
 
 const rewardsReducer = (state = {}, action) => {
     Object.freeze(state);
     let tmp = JSON.parse(JSON.stringify(state));
+    let currentArrange = JSON.stringify(state.arrange)
     switch (action.type) {
         case ADD_REWARD:
-            addReward(tmp, action.rewardId, action.category);
+            if (addReward(tmp.arrange, action.rewardId, action.category)){
+                tmp.undo = currentArrange;
+            };
             return tmp;
         case DELETE_REWARD:
-            removeReward(tmp, action.rewardId, action.category)
+            if (removeReward(tmp.arrange, action.rewardId, action.category)){
+                tmp.undo = currentArrange;
+            }
             return tmp;
         case MOVE_REWARD:
-            moveReward(tmp, action.rewardId, action.start, action.end);
+            if (moveReward(tmp.arrange, action.rewardId, action.start, action.end)){
+                tmp.undo = currentArrange;
+            };
+            return tmp;
+        case "UNDO_MOVE":
+            if (tmp.undo){
+                tmp.arrange = JSON.parse(tmp.undo);
+                tmp.redo = currentArrange;
+                tmp.undo = null;
+            }
+            return tmp;
+        case "REDO_MOVE":
+            if (tmp.redo){
+                tmp.arrange = JSON.parse(tmp.redo);
+                tmp.redo = null;
+                tmp.undo = currentArrange;
+            }
             return tmp;
         default:
             return state;
@@ -23,6 +43,7 @@ const rewardsReducer = (state = {}, action) => {
 export default rewardsReducer;
 
 function addReward(obj, rewardId, col){
+    console.dir(obj)
     for (let i = 0; i < obj[col].length; i++){
         if (obj[col][i] === rewardId) return false;
     }
@@ -41,3 +62,4 @@ function moveReward(tmp, rewardId, start, end) {
     }
     return true;
 }
+

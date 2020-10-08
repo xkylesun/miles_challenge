@@ -6,15 +6,17 @@ import { createReward, deleteReward, moveReward } from "../actions/reward_action
 
 
 const mapStateToProps = (state, ownProps) => {
-    let arrange = Object.assign(state);
-    return {arrange};
+    let tmp = Object.assign(state);
+    return tmp;
 };
 
 const mapDispatchToProps = dispatch => {
     return {
         createReward: (rewardId, category) => dispatch(createReward(rewardId, category)),
         deleteReward: (rewardId, category) => dispatch(deleteReward(rewardId, category)),
-        moveReward: (rewardId, start, end) => dispatch(moveReward(rewardId, start, end))
+        moveReward: (rewardId, start, end) => dispatch(moveReward(rewardId, start, end)),
+        undoMove: () => dispatch({type: "UNDO_MOVE"}),
+        redoMove: () => dispatch({type: "REDO_MOVE"})
     }
 };
 

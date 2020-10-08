@@ -9,23 +9,18 @@ class Table extends React.Component {
         this.state = {
             dragRewardId: null,
             dragStartCol: null,
-            undo: null,
-            redo: null
         }
 
         this.drag = this.drag.bind(this);
         this.drop = this.drop.bind(this);
         this.save = this.save.bind(this);
-        this.undo = this.undo.bind(this);
-        this.redo = this.redo.bind(this);
-
         this.setDragStart = this.setDragStart.bind(this);
     }
 
     componentDidMount(){
         let start = Object.assign(this.props)
         this.setState(start)
-        setTimeout(() => console.dir(this.state), 1000)
+        // setTimeout(() => console.dir(this.state), 1000)
     }
 
     allowDrop(e) {
@@ -63,30 +58,6 @@ class Table extends React.Component {
 
     save(){
         localStorage.setItem("lastData", JSON.stringify(this.props.arrange));
-    }
-
-    undo(){
-        // if (this.state.undo){
-        //     let data = JSON.parse(this.state.undo);
-        //     let tmp = JSON.stringify(this.state.arrange);
-        //     this.setState({
-        //         arrange: data,
-        //         undo: null,
-        //         redo: tmp
-        //     });
-        // }
-    }
-
-    redo(){
-        // if (this.state.redo){
-        //     let data = JSON.parse(this.state.redo);
-        //     let tmp = JSON.stringify(this.state.arrange);
-        //     this.setState({
-        //         arrange: data,
-        //         undo: tmp,
-        //         redo: null
-        //     });
-        // }
     }
 
     render() {
@@ -131,8 +102,8 @@ class Table extends React.Component {
                     </span>
                 </div>
                 <div>
-                    <button className="control" onClick={this.undo}>Undo</button>
-                    <button className="control"  onClick={this.redo}>Redo</button>
+                    <button className="control" onClick={this.props.undoMove}>Undo</button>
+                    <button className="control" onClick={this.props.redoMove}>Redo</button>
                     <button className="control"  onClick={this.save}>Save</button>
                 </div>
             </div>

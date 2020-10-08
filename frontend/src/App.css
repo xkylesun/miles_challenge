@@ -201,7 +201,9 @@ table {
 }
 
 .control {
-  margin: 20px;
+  margin: 40px 20px;
+  font-size: 20px;
+  padding: 5px 10px;
 }
 
 .reward_button {
