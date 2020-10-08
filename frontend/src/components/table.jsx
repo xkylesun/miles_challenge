@@ -16,13 +16,7 @@ class Table extends React.Component {
         this.save = this.save.bind(this);
         this.setDragStart = this.setDragStart.bind(this);
     }
-
-    componentDidMount(){
-        let start = Object.assign(this.props)
-        this.setState(start)
-        // setTimeout(() => console.dir(this.state), 1000)
-    }
-
+    
     allowDrop(e) {
         e.preventDefault();
     }
@@ -61,7 +55,6 @@ class Table extends React.Component {
     }
 
     render() {
-        console.dir(this.props)
         return (
             <div>
                 <div className="table">

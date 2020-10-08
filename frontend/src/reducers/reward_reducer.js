@@ -43,7 +43,6 @@ const rewardsReducer = (state = {}, action) => {
 export default rewardsReducer;
 
 function addReward(obj, rewardId, col){
-    console.dir(obj)
     for (let i = 0; i < obj[col].length; i++){
         if (obj[col][i] === rewardId) return false;
     }
