@@ -16,7 +16,7 @@ class Reward extends React.Component {
                 className="reward_item reward_in_cat">
                 <button
                     className="reward_button" 
-                    onClick={() => this.props.remove(this.props.name, this.props.category)}>x</button>
+                    onClick={() => this.props.remove(this.props.name, null, this.props.category)}>x</button>
                 <h1>{this.props.name}</h1>
             </div>
         );

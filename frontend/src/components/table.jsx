@@ -9,20 +9,35 @@ class Table extends React.Component {
         this.state = {
             dragRewardId: null,
             dragStartCol: null,
-            C1: [],
-            C2: [],
-            C3: [],
-            C4: [],
-            C5: []
+            arrange: {
+                C1: [],
+                C2: [],
+                C3: [],
+                C4: [],
+                C5: [],
+            },
+            undo: null,
+            redo: null
+
         }
         this.addReward = this.addReward.bind(this);
         this.removeReward = this.removeReward.bind(this);
         this.moveReward = this.moveReward.bind(this);
 
+        this.action = this.action.bind(this)
+
         this.drag = this.drag.bind(this);
         this.drop = this.drop.bind(this);
+        this.save = this.save.bind(this);
+        this.undo = this.undo.bind(this);
+        this.redo = this.redo.bind(this);
 
         this.setDragStart = this.setDragStart.bind(this);
+    }
+
+    componentDidMount(){
+        let data = localStorage.getItem("lastData");
+        if (data) this.setState({arrange: JSON.parse(data)});
     }
 
     allowDrop(e) {
@@ -39,14 +54,14 @@ class Table extends React.Component {
         while (tmp.parentNode.id !== "category_body") {
             tmp = tmp.parentElement;
         }
-        let rewName = this.state.dragRewardId;
+        let rewardName = this.state.dragRewardId;
         let col = tmp.id;
-        this.addReward(rewName, col);
-        if (this.state.dragStartCol){
-            this.removeReward(rewName, this.state.dragStartCol);
-        }
-        this.setState({ dragRewardId: null,
-                        dragStartCol: null })
+
+        this.action(rewardName, col)
+        this.setState({ 
+            dragRewardId: null,
+            dragStartCol: null,
+        })
 
     }
 
@@ -54,64 +69,116 @@ class Table extends React.Component {
         this.setState({ dragStartCol: col })
     }
 
-    addReward(rewName, col){
-        let tmp = this.state[col].slice();
-        for (let i = 0; i < tmp.length; i++){
-            if (tmp[i] === rewName) return;
+    addReward(tmp, rewardName, col){
+        for (let i = 0; i < tmp[col].length; i++){
+            if (tmp[col][i] === rewardName) return false;
         }
-        tmp.push(rewName);
-        this.setState({[col]: tmp})
+        tmp[col].push(rewardName);
+        return true;
     }
 
-    removeReward(rewardName, col){
-        let tmp = this.state[col].slice();
-        tmp = tmp.filter(rew => rew !== rewardName)
-        this.setState({[col]: tmp});
+    removeReward(tmp, rewardName, col){
+        tmp[col] = tmp[col].filter(rew => rew !== rewardName)
+        return true;
     }
 
-    moveReward(rewardName, end, start){
-        this.addReward(rewardName, end);
-        if (start) this.removeReward(rewardName, start);
+    moveReward(tmp, rewardName, start, end){
+        if(this.addReward(tmp, rewardName, end)){
+            tmp = this.removeReward(tmp, rewardName, start);
+        }
+    }
+
+    action (rewardName, end, start){
+        // let data = JSON.stringify(this.state.arrange);
+        let tmp = Object.assign(this.state.arrange);
+        let data = JSON.stringify(tmp);
+        if (this.state.dragStartCol){
+            this.moveReward(tmp, rewardName, this.state.dragStartCol, end);
+        } else {
+            if (end) this.addReward(tmp, rewardName, end);
+            if (start) this.removeReward(tmp, rewardName, start);
+        }
+        this.setState({
+            arrange: tmp,
+            undo: data
+        });
+    }
+
+    save(){
+        let data = Object.assign(this.state.arrange);
+        localStorage.setItem("lastData", JSON.stringify(data));
+    }
+
+    undo(){
+        if (this.state.undo){
+            let data = JSON.parse(this.state.undo);
+            let tmp = JSON.stringify(this.state.arrange);
+            this.setState({
+                arrange: data,
+                undo: null,
+                redo: tmp
+            });
+        }
+    }
+
+    redo(){
+        if (this.state.redo){
+            console.log(this.state.redo)
+            let data = JSON.parse(this.state.redo);
+            let tmp = JSON.stringify(this.state.arrange);
+            this.setState({
+                arrange: data,
+                undo: tmp,
+                redo: null
+            });
+        }
     }
 
     render() {
         return (
-            <div className="table">
-                <span className="reward_col">
-                    <h1 className="tbl_title">Rewards</h1>
-                    <ul className="reward_list">
-                        {this.rewards.map(el => (
-                        <li 
-                            key={el}
-                            id={el}
-                            className="reward_item"
-                            draggable={true}
-                            onDragStart={e => this.drag(e)}
-                            >
-                            <h1>{el}</h1>
-                        </li>))}
-                    </ul>
-                </span>
-                <span className="category_col">
-                    <h1 className="tbl_title">Categories</h1>
-                    <ul className="category_list" id="category_list">
-                        {this.categories.map(el => (<li
+            <div>
+                <div className="table">
+                    <span className="reward_col">
+                        <h1 className="tbl_title">Rewards</h1>
+                        <ul className="reward_list">
+                            {this.rewards.map(el => (
+                            <li 
                                 key={el}
-                                className="category_item"
-                                onDrop={e => this.drop(e)}
-                                onDragOver={e => this.allowDrop(e)}
-                            >
-                            <Category
-                                name={el}
-                                // retrieve from cache later
-                                rewards={this.state[el]}
-                                removeReward={this.removeReward}
-                                drag={this.drag}
-                                setDragStart={this.setDragStart}
-                            />
-                        </li>))}
-                    </ul>
-                </span>
+                                id={el}
+                                className="reward_item"
+                                draggable={true}
+                                onDragStart={e => this.drag(e)}
+                                >
+                                <h1>{el}</h1>
+                            </li>))}
+                        </ul>
+                    </span>
+                    <span className="category_col">
+                        <h1 className="tbl_title">Categories</h1>
+                        <ul className="category_list" id="category_list">
+                            {this.categories.map(el => (<li
+                                    key={el}
+                                    className="category_item"
+                                    onDrop={e => this.drop(e)}
+                                    onDragOver={e => this.allowDrop(e)}
+                                >
+                                <Category
+                                    name={el}
+                                    // retrieve from cache later
+                                    rewards={this.state.arrange[el]}
+                                    removeReward={this.action}
+                                    drag={this.drag}
+                                    setDragStart={this.setDragStart}
+                                />
+                            </li>))}
+                        </ul>
+                    </span>
+                </div>
+                <div>
+                    <button onClick={this.undo}>Undo</button>
+                    <button onClick={this.redo}>Redo</button>
+                    <button onClick={this.save}>Save</button>
+                </div>
             </div>
         );
     }
