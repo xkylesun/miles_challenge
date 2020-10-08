@@ -36,8 +36,19 @@ class Table extends React.Component {
     }
 
     componentDidMount(){
-        let data = localStorage.getItem("lastData");
-        if (data) this.setState({arrange: JSON.parse(data)});
+        // let data = localStorage.getItem("lastData");
+        // if (data) this.setState({arrange: JSON.parse(data)});
+        let start = {
+            dragRewardId: null,
+            dragStartCol: null,
+            undo: null,
+            redo: null
+        };
+
+        start = Object.assign(start, this.props)
+
+        this.setState(start)
+        setTimeout(() => console.dir(this.state), 1000)
     }
 
     allowDrop(e) {
@@ -134,6 +145,7 @@ class Table extends React.Component {
     }
 
     render() {
+        console.dir(this.props)
         return (
             <div>
                 <div className="table">

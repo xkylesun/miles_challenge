@@ -5,11 +5,6 @@ class Reward extends React.Component {
         super(props)
     }
 
-    componentDidMount() {
-        let top = document.getElementsByClassName(`select_${this.props.name}`)[0];
-        console.log(top)
-    }
-
     render() {
         return (
             <div

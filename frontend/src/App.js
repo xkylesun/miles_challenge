@@ -1,13 +1,17 @@
 import React from 'react';
-import Table from "./components/table"
+import TableContainer from "./components/table_container"
 import './App.css';
 
-function App() {
+import {Provider} from "react-redux";
+
+const App = ({store}) => {
   return (
-    <div className="App">
-      <div className="project_title">Miles Front-end Challenge - Kyle Sun</div>
-      <Table/>
-    </div>
+    <Provider store={store}>
+      <div className="App">
+        <div className="project_title">Miles Front-end Challenge - Kyle Sun</div>
+        <TableContainer/>
+      </div>
+    </Provider>
   );
 }
 
