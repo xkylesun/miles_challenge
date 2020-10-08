@@ -36,3 +36,123 @@
     transform: rotate(360deg);
   }
 }
+
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+
+/* css start here */
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+.table {
+  margin-top: 20px;
+  display: flex;
+}
+
+.reward_col {
+  width: 25%;
+  border-right: 1px solid gray;
+}
+
+.category_col {
+  width: 75%;
+  border-right: 1px solid gray;
+}
+
+.reward_list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
+  min-width: 120px;
+}
+
+.reward_item {
+  height: 80px;
+  width: 80px;
+  background-color: aqua;
+  margin: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.category_list {
+  display: flex;
+  margin: 10px;
+  height: 100%;
+}
+
+.category_item {
+  display: inline-block;
+  width: 100%;
+}
+
+.category_body {
+  height: 100%;
+}
+
+.category_rewards {
+  height: 100%;
+}
+
+.tbl_title {
+  padding: 5px 10px;
+  margin: 0 10px;
+  border-bottom: 1px solid gray;
+}
+
+.reward_in_cat {
+  position: relative;
+}
+
+.reward_button {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
