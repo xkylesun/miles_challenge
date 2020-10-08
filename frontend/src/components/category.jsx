@@ -7,6 +7,7 @@ class Category extends React.Component {
     }
 
     render() {
+        console.dir(this.props)
         return (
             <div className="category_body" id="category_body">
                 <h1 className="tbl_title">{this.props.name}</h1>
@@ -20,7 +21,7 @@ class Category extends React.Component {
                                 key={rew}
                                 name={rew}
                                 category={this.props.name}
-                                remove={this.props.removeReward}
+                                deleteReward={this.props.deleteReward}
                                 drag={this.props.drag}
                                 setDragStart={this.props.setDragStart}
                             />

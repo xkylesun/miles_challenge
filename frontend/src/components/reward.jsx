@@ -6,6 +6,7 @@ class Reward extends React.Component {
     }
 
     render() {
+
         return (
             <div
                 id={this.props.name}
@@ -17,7 +18,7 @@ class Reward extends React.Component {
                 <div className="button_container">
                     <button
                         className="reward_button"
-                        onClick={() => this.props.remove(this.props.name, null, this.props.category)}>x</button>
+                        onClick={() => this.props.deleteReward(this.props.name, this.props.category)}>x</button>
                 </div>    
                 <h1 className="reward_title">{this.props.name}</h1>
             </div>

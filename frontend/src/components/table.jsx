@@ -9,22 +9,9 @@ class Table extends React.Component {
         this.state = {
             dragRewardId: null,
             dragStartCol: null,
-            arrange: {
-                C1: [],
-                C2: [],
-                C3: [],
-                C4: [],
-                C5: [],
-            },
             undo: null,
             redo: null
-
         }
-        this.addReward = this.addReward.bind(this);
-        this.removeReward = this.removeReward.bind(this);
-        this.moveReward = this.moveReward.bind(this);
-
-        this.action = this.action.bind(this)
 
         this.drag = this.drag.bind(this);
         this.drop = this.drop.bind(this);
@@ -36,17 +23,7 @@ class Table extends React.Component {
     }
 
     componentDidMount(){
-        // let data = localStorage.getItem("lastData");
-        // if (data) this.setState({arrange: JSON.parse(data)});
-        let start = {
-            dragRewardId: null,
-            dragStartCol: null,
-            undo: null,
-            redo: null
-        };
-
-        start = Object.assign(start, this.props)
-
+        let start = Object.assign(this.props)
         this.setState(start)
         setTimeout(() => console.dir(this.state), 1000)
     }
@@ -68,7 +45,11 @@ class Table extends React.Component {
         let rewardName = this.state.dragRewardId;
         let col = tmp.id;
 
-        this.action(rewardName, col)
+        if (this.state.dragStartCol){
+            this.props.moveReward(rewardName, this.state.dragStartCol, col)
+        } else {
+            this.props.createReward(rewardName, col)
+        }
         this.setState({ 
             dragRewardId: null,
             dragStartCol: null,
@@ -80,68 +61,32 @@ class Table extends React.Component {
         this.setState({ dragStartCol: col })
     }
 
-    addReward(tmp, rewardName, col){
-        for (let i = 0; i < tmp[col].length; i++){
-            if (tmp[col][i] === rewardName) return false;
-        }
-        tmp[col].push(rewardName);
-        return true;
-    }
-
-    removeReward(tmp, rewardName, col){
-        tmp[col] = tmp[col].filter(rew => rew !== rewardName)
-        return true;
-    }
-
-    moveReward(tmp, rewardName, start, end){
-        if(this.addReward(tmp, rewardName, end)){
-            tmp = this.removeReward(tmp, rewardName, start);
-        }
-    }
-
-    action (rewardName, end, start){
-        // let data = JSON.stringify(this.state.arrange);
-        let tmp = Object.assign(this.state.arrange);
-        let data = JSON.stringify(tmp);
-        if (this.state.dragStartCol){
-            this.moveReward(tmp, rewardName, this.state.dragStartCol, end);
-        } else {
-            if (end) this.addReward(tmp, rewardName, end);
-            if (start) this.removeReward(tmp, rewardName, start);
-        }
-        this.setState({
-            arrange: tmp,
-            undo: data
-        });
-    }
-
     save(){
-        let data = Object.assign(this.state.arrange);
-        localStorage.setItem("lastData", JSON.stringify(data));
+        localStorage.setItem("lastData", JSON.stringify(this.props.arrange));
     }
 
     undo(){
-        if (this.state.undo){
-            let data = JSON.parse(this.state.undo);
-            let tmp = JSON.stringify(this.state.arrange);
-            this.setState({
-                arrange: data,
-                undo: null,
-                redo: tmp
-            });
-        }
+        // if (this.state.undo){
+        //     let data = JSON.parse(this.state.undo);
+        //     let tmp = JSON.stringify(this.state.arrange);
+        //     this.setState({
+        //         arrange: data,
+        //         undo: null,
+        //         redo: tmp
+        //     });
+        // }
     }
 
     redo(){
-        if (this.state.redo){
-            let data = JSON.parse(this.state.redo);
-            let tmp = JSON.stringify(this.state.arrange);
-            this.setState({
-                arrange: data,
-                undo: tmp,
-                redo: null
-            });
-        }
+        // if (this.state.redo){
+        //     let data = JSON.parse(this.state.redo);
+        //     let tmp = JSON.stringify(this.state.arrange);
+        //     this.setState({
+        //         arrange: data,
+        //         undo: tmp,
+        //         redo: null
+        //     });
+        // }
     }
 
     render() {
@@ -176,8 +121,8 @@ class Table extends React.Component {
                                 <Category
                                     name={el}
                                     // retrieve from cache later
-                                    rewards={this.state.arrange[el]}
-                                    removeReward={this.action}
+                                    rewards={this.props.arrange[el]}
+                                    deleteReward={this.props.deleteReward}
                                     drag={this.drag}
                                     setDragStart={this.setDragStart}
                                 />
