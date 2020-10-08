@@ -16,10 +16,13 @@ class Category extends React.Component {
                     {   
                         this.props.rewards.map(rew => (
                             <Reward
+                                id={rew}
                                 key={rew}
                                 name={rew}
                                 category={this.props.name}
                                 remove={this.props.removeReward}
+                                drag={this.props.drag}
+                                setDragStart={this.props.setDragStart}
                             />
                             )
                         )

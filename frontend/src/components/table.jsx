@@ -7,6 +7,8 @@ class Table extends React.Component {
         this.rewards = ["R1", "R2", "R3", "R4", "R5"];
         this.categories = ["C1", "C2", "C3", "C4", "C5"];
         this.state = {
+            dragRewardId: null,
+            dragStartCol: null,
             C1: [],
             C2: [],
             C3: [],
@@ -15,8 +17,12 @@ class Table extends React.Component {
         }
         this.addReward = this.addReward.bind(this);
         this.removeReward = this.removeReward.bind(this);
+        this.moveReward = this.moveReward.bind(this);
+
         this.drag = this.drag.bind(this);
         this.drop = this.drop.bind(this);
+
+        this.setDragStart = this.setDragStart.bind(this);
     }
 
     allowDrop(e) {
@@ -24,7 +30,7 @@ class Table extends React.Component {
     }
 
     drag(e) {
-        e.dataTransfer.setData("text", e.target.id)
+        this.setState({ dragRewardId: e.target.id })
     }
 
     drop(e) {
@@ -33,14 +39,19 @@ class Table extends React.Component {
         while (tmp.parentNode.id !== "category_body") {
             tmp = tmp.parentElement;
         }
-        let rewName = e.dataTransfer.getData("text");
-
-
+        let rewName = this.state.dragRewardId;
         let col = tmp.id;
-
         this.addReward(rewName, col);
-        // setTimeout(() => console.log(this.state), 1000)
+        if (this.state.dragStartCol){
+            this.removeReward(rewName, this.state.dragStartCol);
+        }
+        this.setState({ dragRewardId: null,
+                        dragStartCol: null })
 
+    }
+
+    setDragStart(col) {
+        this.setState({ dragStartCol: col })
     }
 
     addReward(rewName, col){
@@ -55,9 +66,12 @@ class Table extends React.Component {
     removeReward(rewardName, col){
         let tmp = this.state[col].slice();
         tmp = tmp.filter(rew => rew !== rewardName)
-        console.log(tmp)
         this.setState({[col]: tmp});
-        setTimeout(() => console.dir(this.state, 1000))
+    }
+
+    moveReward(rewardName, end, start){
+        this.addReward(rewardName, end);
+        if (start) this.removeReward(rewardName, start);
     }
 
     render() {
@@ -91,8 +105,9 @@ class Table extends React.Component {
                                 name={el}
                                 // retrieve from cache later
                                 rewards={this.state[el]}
-                                drop={this.drop}
                                 removeReward={this.removeReward}
+                                drag={this.drag}
+                                setDragStart={this.setDragStart}
                             />
                         </li>))}
                     </ul>
