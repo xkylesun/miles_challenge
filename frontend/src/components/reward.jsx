@@ -5,6 +5,11 @@ class Reward extends React.Component {
         super(props)
     }
 
+    componentDidMount() {
+        let top = document.getElementsByClassName(`select_${this.props.name}`)[0];
+        console.log(top)
+    }
+
     render() {
         return (
             <div
@@ -13,11 +18,13 @@ class Reward extends React.Component {
                 onDragStart={e => {
                     this.props.setDragStart(this.props.category)
                     this.props.drag(e)}}
-                className="reward_item reward_in_cat">
-                <button
-                    className="reward_button" 
-                    onClick={() => this.props.remove(this.props.name, null, this.props.category)}>x</button>
-                <h1>{this.props.name}</h1>
+                className={`reward_item reward_in_cat reward_${this.props.name}`}>
+                <div className="button_container">
+                    <button
+                        className="reward_button"
+                        onClick={() => this.props.remove(this.props.name, null, this.props.category)}>x</button>
+                </div>    
+                <h1 className="reward_title">{this.props.name}</h1>
             </div>
         );
     }

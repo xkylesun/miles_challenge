@@ -145,7 +145,7 @@ class Table extends React.Component {
                             <li 
                                 key={el}
                                 id={el}
-                                className="reward_item"
+                                    className={`reward_item select_${el}`}
                                 draggable={true}
                                 onDragStart={e => this.drag(e)}
                                 >
@@ -175,9 +175,9 @@ class Table extends React.Component {
                     </span>
                 </div>
                 <div>
-                    <button onClick={this.undo}>Undo</button>
-                    <button onClick={this.redo}>Redo</button>
-                    <button onClick={this.save}>Save</button>
+                    <button className="control" onClick={this.undo}>Undo</button>
+                    <button className="control"  onClick={this.redo}>Redo</button>
+                    <button className="control"  onClick={this.save}>Save</button>
                 </div>
             </div>
         );
