@@ -124,6 +124,7 @@ table {
   align-items: center;
   border: 1px solid lightgray;
   box-sizing: border-box;
+  background-color: white;
 }
 
 .reward_item:hover {
