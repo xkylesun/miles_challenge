@@ -2,6 +2,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import App from './App';
 import { screen } from '@testing-library/dom'
+import { within } from '@testing-library/dom/dist/@testing-library/dom.umd.js'
 
 test('properly display startup page', () => {
   const { getByText } = render(<App />);
